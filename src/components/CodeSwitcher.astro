@@ -1,0 +1,154 @@
+---
+/**
+ * Tabbed code panel, rendered entirely on the server.
+ *
+ * The first panel carries data-active in the markup, so the code stays readable
+ * with JavaScript disabled. The inline module script only upgrades it: it wires
+ * the tabs, the copy button and the keyboard arrow keys.
+ */
+
+export interface CodeTab {
+  id: string;
+  label: string;
+  /** Raw source, used by the copy button. */
+  source: string;
+  /** Build-time highlighted markup. */
+  html: string;
+  note: string;
+}
+
+interface Props {
+  tabs: CodeTab[];
+  label: string;
+}
+
+const { tabs, label } = Astro.props;
+---
+
+<div class="overflow-hidden rounded-panel border border-line bg-raised" data-code-tabs>
+  <div class="flex items-center justify-between gap-3 border-b border-line-soft px-2 py-2">
+    <div role="tablist" aria-label={label} class="flex gap-1">
+      {
+        tabs.map((tab, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`tab-${tab.id}`}
+            data-tab={tab.id}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            aria-controls={`panel-${tab.id}`}
+            tabindex={i === 0 ? 0 : -1}
+            class:list={[
+              'rounded-control px-3 py-1.5 text-[13px] font-medium transition-colors',
+              i === 0
+                ? 'bg-panel text-ink'
+                : 'text-ink-3 hover:bg-panel/60 hover:text-ink-2',
+            ]}
+          >
+            {tab.label}
+          </button>
+        ))
+      }
+    </div>
+
+    <button
+      type="button"
+      data-copy
+      hidden
+      class="rounded-control px-3 py-1.5 font-mono text-[11px] text-ink-3 transition-colors hover:bg-panel hover:text-ink"
+    >
+      复制
+    </button>
+  </div>
+
+  {
+    tabs.map((tab, i) => (
+      <div
+        role="tabpanel"
+        id={`panel-${tab.id}`}
+        data-panel={tab.id}
+        aria-labelledby={`tab-${tab.id}`}
+        hidden={i !== 0}
+      >
+        <div class="code-scroll" set:html={tab.html} />
+        <p class="border-t border-line-soft px-5 py-3 text-xs leading-relaxed text-ink-3">
+          {tab.note}
+        </p>
+      </div>
+    ))
+  }
+
+  <script type="application/json" data-sources set:html={JSON.stringify(Object.fromEntries(tabs.map((t) => [t.id, t.source])))} />
+</div>
+
+<script>
+  const SELECTOR = '[data-code-tabs]';
+
+  for (const root of document.querySelectorAll<HTMLElement>(SELECTOR)) {
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')];
+    const copy = root.querySelector<HTMLButtonElement>('[data-copy]');
+    if (buttons.length < 2) continue;
+
+    // Raw sources ride along in a JSON payload so the copy button needs no
+    // per-panel DOM scraping.
+    const sources: Record<string, string> = JSON.parse(
+      root.querySelector('[data-sources]')?.textContent ?? '{}',
+    );
+
+    const select = (id: string) => {
+      for (const button of buttons) {
+        const active = button.dataset.tab === id;
+        button.setAttribute('aria-selected', String(active));
+        button.tabIndex = active ? 0 : -1;
+        button.classList.toggle('bg-panel', active);
+        button.classList.toggle('text-ink', active);
+        button.classList.toggle('text-ink-3', !active);
+      }
+      for (const panel of panels) {
+        panel.hidden = panel.dataset.panel !== id;
+      }
+    };
+
+    for (const button of buttons) {
+      button.addEventListener('click', () => select(button.dataset.tab!));
+    }
+
+    root.addEventListener('keydown', (event) => {
+      const keys = ['ArrowLeft', 'ArrowRight', 'Home', 'End'];
+      if (!keys.includes(event.key)) return;
+      const current = buttons.findIndex((b) => b.getAttribute('aria-selected') === 'true');
+      if (current < 0) return;
+      event.preventDefault();
+      const next =
+        event.key === 'Home'
+          ? 0
+          : event.key === 'End'
+            ? buttons.length - 1
+            : (current + (event.key === 'ArrowRight' ? 1 : -1) + buttons.length) %
+              buttons.length;
+      buttons[next].focus();
+      select(buttons[next].dataset.tab!);
+    });
+
+    if (copy) {
+      copy.hidden = false;
+      let timer: number | undefined;
+      copy.addEventListener('click', async () => {
+        const id = buttons.find((b) => b.getAttribute('aria-selected') === 'true')?.dataset.tab;
+        const text = id ? sources[id] : undefined;
+        if (!text) return;
+        try {
+          await navigator.clipboard.writeText(text);
+          copy.textContent = '已复制';
+        } catch {
+          copy.textContent = '复制失败';
+        }
+        window.clearTimeout(timer);
+        timer = window.setTimeout(() => {
+          copy.textContent = '复制';
+        }, 1600);
+      });
+    }
+  }
+</script>

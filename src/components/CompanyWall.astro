@@ -1,0 +1,30 @@
+---
+import { companies } from '../data/content';
+---
+
+<section aria-label="使用 MSW 的公司" class="border-y border-line-soft py-8">
+  <div class="mx-auto max-w-6xl px-5">
+    <div class="flex flex-col items-center gap-6 lg:flex-row lg:justify-between lg:gap-10">
+      <p class="shrink-0 text-[13px] text-ink-3 lg:max-w-[10rem] lg:leading-snug">
+        被这些团队用于生产环境
+      </p>
+      <ul class="flex flex-wrap items-center justify-center gap-x-10 gap-y-5 sm:gap-x-14">
+        {
+          companies.map((company) => (
+            <li>
+              <img
+                src={company.file}
+                alt={company.name}
+                width="104"
+                height="32"
+                loading="lazy"
+                decoding="async"
+                class="h-6 w-auto max-w-[7rem] opacity-50 transition-opacity duration-300 hover:opacity-100 sm:h-7"
+              />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

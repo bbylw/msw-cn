@@ -1,0 +1,166 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   Design tokens
+   Single dark theme (warm off-black family). One accent: MSW brand red.
+   Shape lock: panels 10px radius, controls 6px radius. Nothing else.
+--------------------------------------------------------------------------- */
+@theme {
+  --font-sans:
+    'Geist Variable', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', ui-sans-serif,
+    system-ui, sans-serif;
+  --font-mono:
+    'Geist Mono Variable', ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+
+  /* Surfaces: warm neutrals, one family, no hue shifts between sections */
+  --color-base: #0c0c0d;
+  --color-raised: #131314;
+  --color-panel: #171718;
+  --color-line: #262628;
+  --color-line-soft: #1e1e20;
+
+  /* Text. ink-3 and signal-text are the dimmest values still allowed here and
+     both clear WCAG AA (4.5:1) against base, raised and panel. */
+  --color-ink: #f4f4f2;
+  --color-ink-2: #a8a8a3;
+  --color-ink-3: #8a8a85;
+
+  /* Single accent + one semantic status color */
+  --color-signal: #d84040;
+  --color-signal-dim: #a83333;
+  --color-signal-text: #e35f5f;
+  --color-live: #4a9d5f;
+
+  --radius-panel: 10px;
+  --radius-control: 6px;
+}
+
+@font-face {
+  font-family: 'Geist Variable';
+  src: url('/fonts/Geist-Variable.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Geist Mono Variable';
+  src: url('/fonts/GeistMono-Variable.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--color-base);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background-color: var(--color-base);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Sticky header offset for anchor targets */
+  section[id],
+  div[id] {
+    scroll-margin-top: 6rem;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-signal) 45%, transparent);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  /* Tabular figures wherever numbers carry meaning */
+  .font-mono {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  /* Reveal on scroll. Driven by animation-timeline, so no scroll listener runs
+     and nothing re-renders. Collapses to fully visible under reduced motion. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal {
+        animation: reveal-rise linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 62%;
+      }
+
+      .reveal-late {
+        animation-range: entry 0% entry 80%;
+      }
+    }
+  }
+}
+
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Fallback for engines without scroll-driven animations: content is simply
+   visible. The .reveal rules above only add motion where supported. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Shiki output. Astro's <Code> emits a <pre> with an inline background color
+   from the chosen theme, so the panel background is forced transparent here to
+   keep the code block on the page's own surface color.
+--------------------------------------------------------------------------- */
+.code-scroll pre {
+  margin: 0;
+  padding: 1.15rem 1.25rem;
+  background: transparent !important;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.75;
+  tab-size: 2;
+}
+
+.code-scroll pre code {
+  display: block;
+  min-width: max-content;
+  font-family: inherit;
+}
+
+@media (min-width: 640px) {
+  .code-scroll pre {
+    font-size: 13px;
+  }
+}
+
+/* Grain sits on a fixed, non-scrolling layer so it never repaints on scroll */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.032;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}

@@ -1,0 +1,70 @@
+---
+import { node } from '../data/content';
+
+const environments = [
+  { label: '浏览器', note: 'setupWorker 启动 Service Worker 拦截请求' },
+  { label: '测试', note: 'setupServer 复用同一批请求处理函数' },
+  { label: '本地开发', note: '不必等待后端接口就绪' },
+];
+---
+
+<section id="node" class="border-y border-line-soft bg-raised/40 py-20 lg:py-28">
+  <div class="mx-auto max-w-6xl px-5">
+    <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-16">
+      <div>
+        <h2 class="reveal text-3xl leading-tight font-semibold tracking-tight text-balance sm:text-4xl">
+          同一套逻辑，跑在服务端
+        </h2>
+        <p class="reveal mt-5 max-w-[46ch] text-[15px] leading-relaxed text-ink-2">
+          {node.body}
+        </p>
+
+        <ul class="reveal mt-8 grid gap-4">
+          {
+            node.points.map((point) => (
+              <li class="flex gap-3 text-sm leading-relaxed text-ink-2">
+                <span class="mt-2 h-1 w-1 shrink-0 rounded-full bg-ink-3" aria-hidden="true" />
+                <span>{point}</span>
+              </li>
+            ))
+          }
+        </ul>
+
+        <div class="reveal mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+          {
+            node.apiLinks.map((link) => (
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noreferrer"
+                class="text-ink underline decoration-line decoration-1 underline-offset-4 transition-colors hover:decoration-ink-3"
+              >
+                {link.label}
+              </a>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="reveal reveal-late">
+        <p class="text-sm text-ink-3">一份关于网络行为的单一事实来源</p>
+        <ul class="mt-5 grid gap-px overflow-hidden rounded-panel border border-line bg-line">
+          {
+            environments.map((env) => (
+              <li class="flex flex-col gap-1 bg-base px-5 py-5 sm:flex-row sm:items-baseline sm:gap-6">
+                <span class="w-24 shrink-0 font-mono text-[13px] text-ink">{env.label}</span>
+                <span class="text-sm leading-relaxed text-ink-2">{env.note}</span>
+              </li>
+            ))
+          }
+          <li class="bg-panel px-5 py-5">
+            <span class="font-mono text-[13px] text-signal-text">handlers</span>
+            <p class="mt-1 text-sm text-ink-2">
+              三个环境共用同一批请求处理函数，不需要适配器或额外配置。
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

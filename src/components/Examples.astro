@@ -1,0 +1,65 @@
+---
+import CodeSwitcher from './CodeSwitcher.astro';
+import { highlight } from '../lib/highlight';
+import { browserCode, node } from '../data/content';
+
+// Highlighting runs at build time; nothing is shipped to the client for it.
+const [browserHtml, nodeHtml] = await Promise.all([
+  highlight(browserCode),
+  highlight(node.code),
+]);
+
+const tabs = [
+  {
+    id: 'browser',
+    label: '浏览器',
+    source: browserCode,
+    note: '提示：Service Worker 运行在独立线程，但请求处理函数完全在客户端执行。',
+    html: browserHtml,
+  },
+  {
+    id: 'node',
+    label: 'Node.js',
+    source: node.code,
+    note: '提示：server.boundary() 把请求拦截限定在某个闭包范围内。',
+    html: nodeHtml,
+  },
+];
+---
+
+<section class="py-20 lg:py-28">
+  <div class="mx-auto max-w-6xl px-5">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] lg:items-start lg:gap-14">
+      <div class="lg:sticky lg:top-24">
+        <h2 class="reveal text-3xl leading-tight font-semibold tracking-tight text-balance sm:text-4xl">
+          描述网络行为
+        </h2>
+        <p class="reveal mt-5 text-[15px] leading-relaxed text-ink-2">
+          用类 Express 的路由语法描述请求，再用你已有的语言和工具写出响应。
+        </p>
+        <p class="reveal mt-4 text-sm leading-relaxed text-ink-3">
+          在应用中发起请求，响应会直接出现在浏览器的网络面板里。
+        </p>
+
+        <ul class="reveal mt-8 grid gap-3">
+          {
+            [
+              '参数、通配符与正则匹配',
+              '状态码、请求头、Cookie 与延迟',
+              '完全自定义的解析函数',
+            ].map((item) => (
+              <li class="flex items-baseline gap-3 text-sm text-ink-2">
+                <span class="mt-2 h-1 w-1 shrink-0 rounded-full bg-ink-3" aria-hidden="true" />
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="reveal reveal-late min-w-0">
+        <CodeSwitcher tabs={tabs} label="运行环境示例" />
+      </div>
+    </div>
+  </div>
+</section>

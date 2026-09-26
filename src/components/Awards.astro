@@ -1,0 +1,64 @@
+---
+import { awards, thanks } from '../data/content';
+---
+
+<section class="py-20 lg:py-28">
+  <div class="mx-auto max-w-6xl px-5">
+    <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-16">
+      <div>
+        <h2 class="reveal text-3xl leading-tight font-semibold tracking-tight text-balance sm:text-4xl">
+          社区的认可
+        </h2>
+        <p class="reveal mt-5 max-w-[42ch] text-[15px] leading-relaxed text-ink-2">
+          能获得社区对这个项目创新与影响力的认可，我们深感荣幸。
+        </p>
+
+        <div class="reveal mt-9 rounded-panel border border-line bg-raised p-6">
+          <a href={thanks.href} target="_blank" rel="noreferrer" class="group flex flex-wrap items-center gap-5">
+            <span class="grid h-14 shrink-0 place-items-center rounded-control bg-white px-4">
+              <img
+                src={thanks.img}
+                alt={thanks.alt}
+                width="300"
+                height="103"
+                loading="lazy"
+                decoding="async"
+                class="h-6 w-auto"
+              />
+            </span>
+            <p class="min-w-[14rem] flex-1 text-sm leading-relaxed text-ink-2">{thanks.body}</p>
+          </a>
+        </div>
+      </div>
+
+      <ul class="grid gap-4 sm:grid-cols-2">
+        {
+          awards.map((award) => (
+            <li class="reveal">
+              <a
+                href={award.href}
+                target="_blank"
+                rel="noreferrer"
+                class="group flex items-center gap-5 rounded-panel border border-line bg-raised p-6 transition-colors hover:border-ink-3"
+              >
+                <img
+                  src={award.img}
+                  alt={award.alt}
+                  width="124"
+                  height="124"
+                  loading="lazy"
+                  decoding="async"
+                  class="h-14 w-14 shrink-0 object-contain"
+                />
+                <span class="min-w-0">
+                  <span class="block text-[15px] font-medium text-ink">{award.title}</span>
+                  <span class="mt-1 block text-sm text-ink-3">{award.source}</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

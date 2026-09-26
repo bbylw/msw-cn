@@ -1,0 +1,80 @@
+---
+import { site } from '../data/content';
+---
+
+<section id="top" class="relative overflow-hidden pt-16 pb-20 sm:pt-20 lg:pt-24 lg:pb-28">
+  <div class="mx-auto max-w-6xl px-5">
+    <div class="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-16">
+      <div class="reveal">
+        <p class="font-mono text-xs tracking-tight text-ink-3">开源项目，永久免费</p>
+
+        <h1
+          class="mt-6 text-[2.6rem] leading-[1.08] font-semibold tracking-tight text-balance text-ink sm:text-[3.25rem]"
+        >
+          {site.headline}
+        </h1>
+
+        <p class="mt-6 max-w-[46ch] text-[15px] leading-relaxed text-ink-2 sm:text-base">
+          {site.sub}
+        </p>
+
+        <div class="mt-9 flex flex-wrap items-center gap-3">
+          <a
+            href={site.primaryCta.href}
+            target="_blank"
+            rel="noreferrer"
+            class="rounded-control bg-ink px-6 py-3 text-sm font-medium whitespace-nowrap text-base transition-transform duration-200 active:scale-[0.98]"
+          >
+            {site.primaryCta.label}
+          </a>
+          <a
+            href={site.secondaryCta.href}
+            class="rounded-control border border-line px-6 py-3 text-sm font-medium whitespace-nowrap text-ink transition-colors hover:border-ink-3 hover:bg-panel"
+          >
+            {site.secondaryCta.label}
+          </a>
+        </div>
+
+        <div class="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-xs text-ink-3">
+          <a
+            href="https://kettanaito.com/discord"
+            target="_blank"
+            rel="noreferrer"
+            class="transition-colors hover:text-ink">加入 Discord</a
+          >
+          <a
+            href="https://github.com/mswjs/examples"
+            target="_blank"
+            rel="noreferrer"
+            class="transition-colors hover:text-ink">使用示例</a
+          >
+        </div>
+      </div>
+
+      <figure class="reveal reveal-late">
+        <div
+          class="overflow-hidden rounded-panel border border-line bg-raised shadow-[0_28px_70px_-24px_rgba(0,0,0,0.85)]"
+        >
+          <div class="flex items-center gap-2 border-b border-line-soft px-4 py-2.5">
+            <span class="h-2 w-2 rounded-full bg-line" aria-hidden="true"></span>
+            <span class="h-2 w-2 rounded-full bg-line" aria-hidden="true"></span>
+            <span class="h-2 w-2 rounded-full bg-line" aria-hidden="true"></span>
+            <span class="ml-2 font-mono text-[11px] text-ink-3">DevTools · Network</span>
+          </div>
+          <img
+            src="/media/msw-quick-look-network.jpg"
+            alt="Chrome DevTools 网络面板显示被模拟的响应，状态码 202，来源标记为 ServiceWorker"
+            width="1200"
+            height="858"
+            fetchpriority="high"
+            decoding="async"
+            class="block w-full"
+          />
+        </div>
+        <figcaption class="mt-3 text-xs text-ink-3">
+          发起 GET https://github.com/octocat，得到模拟响应，直接在网络面板中可见。
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>

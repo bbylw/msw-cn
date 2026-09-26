@@ -1,0 +1,50 @@
+---
+import { nav, site } from '../data/content';
+---
+
+<footer class="border-t border-line-soft">
+  <div class="mx-auto max-w-6xl px-5">
+    <div class="flex flex-col gap-8 py-14 sm:flex-row sm:items-end sm:justify-between">
+      <div class="max-w-[38ch]">
+        <p class="text-2xl leading-snug font-semibold tracking-tight text-balance text-ink">
+          {site.headline}
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a
+            href={site.primaryCta.href}
+            target="_blank"
+            rel="noreferrer"
+            class="rounded-control bg-ink px-5 py-2.5 text-sm font-medium whitespace-nowrap text-base transition-transform duration-200 active:scale-[0.98]"
+          >
+            {site.primaryCta.label}
+          </a>
+          <a
+            href="https://github.com/mswjs/msw"
+            target="_blank"
+            rel="noreferrer"
+            class="rounded-control border border-line px-5 py-2.5 text-sm font-medium whitespace-nowrap text-ink transition-colors hover:border-ink-3 hover:bg-panel"
+          >
+            GitHub 仓库
+          </a>
+        </div>
+      </div>
+
+      <nav aria-label="页脚导航" class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+        {
+          nav.map((item) => (
+            <a href={item.href} class="text-ink-2 transition-colors hover:text-ink">
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+
+    <div
+      class="flex flex-col gap-2 border-t border-line-soft py-6 text-xs text-ink-3 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>内容译自 MSW 官方 README</p>
+      <p class="font-mono">Astro / Tailwind CSS / Bun</p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,66 @@
+---
+import { browser } from '../data/content';
+---
+
+<section id="browser" class="border-y border-line-soft bg-raised/40 py-20 lg:py-28">
+  <div class="mx-auto max-w-6xl px-5">
+    <div class="max-w-[62ch]">
+      <h2 class="reveal text-3xl leading-tight font-semibold tracking-tight text-balance sm:text-4xl">
+        在浏览器里，它工作在网络层
+      </h2>
+      <p class="reveal mt-5 text-[15px] leading-relaxed text-ink-2">
+        {browser.body}
+      </p>
+      <div class="reveal mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+        {
+          browser.apiLinks.map((link) => (
+            <a
+              href={link.href}
+              target="_blank"
+              rel="noreferrer"
+              class="text-ink underline decoration-line decoration-1 underline-offset-4 transition-colors hover:decoration-ink-3"
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="mt-12 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-10">
+      <ul class="reveal grid gap-px overflow-hidden rounded-panel border border-line bg-line">
+        {
+          browser.points.map((point, i) => (
+            <li class="flex gap-4 bg-base px-5 py-5">
+              <span class="mt-[3px] font-mono text-[11px] text-signal-text">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <p class="text-sm leading-relaxed text-ink-2">{point}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <a
+        href="https://youtu.be/HcQCqboatZk"
+        target="_blank"
+        rel="noreferrer"
+        class="reveal reveal-late group block overflow-hidden rounded-panel border border-line bg-raised"
+      >
+        <img
+          src="/media/msw-video-thumbnail.jpg"
+          alt="演示视频缩略图，展示 Mock Service Worker 如何在浏览器中响应被拦截的请求"
+          width="1280"
+          height="720"
+          loading="lazy"
+          decoding="async"
+          class="aspect-video w-full object-cover"
+        />
+        <span class="flex items-center justify-between gap-4 px-5 py-4">
+          <span class="text-[15px] font-medium text-ink">什么是 Mock Service Worker</span>
+          <span class="font-mono text-[11px] text-ink-3">youtu.be</span>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>

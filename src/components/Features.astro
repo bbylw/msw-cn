@@ -1,0 +1,51 @@
+---
+import { features, quote } from '../data/content';
+
+const panel =
+  'rounded-panel border border-line bg-raised p-7 transition-colors duration-300 hover:border-ink-3 sm:p-8';
+---
+
+<section id="features" class="py-20 lg:py-28">
+  <div class="mx-auto max-w-6xl px-5">
+    <h2 class="reveal max-w-[18ch] text-3xl leading-tight font-semibold tracking-tight text-balance sm:text-4xl">
+      一层拦截，其余照旧
+    </h2>
+
+    <div class="mt-12 grid gap-4 lg:grid-cols-3">
+      {
+        features.map((feature, i) => (
+          <article class={`reveal ${panel} ${feature.span === 'tall' ? 'lg:row-span-2 lg:flex lg:flex-col lg:justify-between' : ''} ${feature.span === 'wide' ? 'lg:col-span-2' : ''}`} style={`animation-range: entry 0% entry ${55 + i * 12}%`}>
+            <div>
+              <h3 class="text-lg font-medium text-ink">{feature.title}</h3>
+              <p class="mt-3 max-w-[52ch] text-sm leading-relaxed text-ink-2">{feature.body}</p>
+            </div>
+            {feature.span === 'tall' && (
+              <p class="mt-10 border-t border-line-soft pt-5 text-sm leading-relaxed text-ink-3">
+                {feature.note}
+              </p>
+            )}
+            {feature.span === 'short' && (
+              <p class="mt-7 font-mono text-xs text-ink-3">{feature.note}</p>
+            )}
+            {feature.span === 'wide' && (
+              <p class="mt-6 text-sm leading-relaxed text-ink-3">{feature.note}</p>
+            )}
+          </article>
+        ))
+      }
+
+      <figure
+        class="reveal flex flex-col justify-between rounded-panel border border-line bg-[linear-gradient(155deg,#241a1a_0%,#181314_45%,#131314_100%)] p-7 sm:p-8"
+        style="animation-range: entry 0% entry 88%"
+      >
+        <blockquote class="text-[15px] leading-relaxed text-ink">
+          {quote.body}
+        </blockquote>
+        <figcaption class="mt-7 text-sm">
+          <span class="text-ink-2">{quote.author}</span>
+          <span class="mt-0.5 block text-xs text-ink-3">{quote.role}</span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>

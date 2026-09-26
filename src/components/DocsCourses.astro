@@ -1,0 +1,73 @@
+---
+import { docs, courses } from '../data/content';
+---
+
+<section id="docs" class="py-20 lg:py-28">
+  <div class="mx-auto max-w-6xl px-5">
+    <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-16">
+      <div>
+        <h2 class="reveal text-3xl leading-tight font-semibold tracking-tight text-balance sm:text-4xl">
+          从文档开始
+        </h2>
+        <p class="reveal mt-5 max-w-[42ch] text-[15px] leading-relaxed text-ink-2">
+          这个页面只是简要介绍。要了解 Mock Service Worker，没有比官方文档更好的起点。
+        </p>
+
+        <ul class="reveal mt-9">
+          {
+            docs.map((doc) => (
+              <li class="border-t border-line-soft last:border-b">
+                <a
+                  href={doc.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  class="group flex items-baseline justify-between gap-6 py-4 transition-colors"
+                >
+                  <span class="text-[15px] font-medium text-ink transition-colors group-hover:text-white">
+                    {doc.label}
+                  </span>
+                  <span class="flex-1 text-right text-sm text-ink-3">{doc.desc}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="reveal reveal-late">
+        <div class="rounded-panel border border-line bg-raised p-7 sm:p-8">
+          <h3 class="text-lg font-medium text-ink">课程</h3>
+          <p class="mt-2 max-w-[46ch] text-sm leading-relaxed text-ink-2">
+            与 Egghead 合作的高质量付费内容，学习 Web 端 API 模拟的最佳实践。版税收入用于支撑项目的持续开发。
+          </p>
+
+          <ul class="mt-7 grid gap-3">
+            {
+              courses.map((course) => (
+                <li>
+                  <a
+                    href={course.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    class="group block rounded-panel border border-line-soft bg-base p-5 transition-colors hover:border-ink-3"
+                  >
+                    <span class="flex items-baseline justify-between gap-4">
+                      <span class="text-[15px] font-medium text-ink">{course.title}</span>
+                      <span
+                        class="shrink-0 font-mono text-[11px] text-ink-3 transition-transform duration-200 group-hover:translate-x-0.5"
+                        aria-hidden="true"
+                      >
+                        egghead.io
+                      </span>
+                    </span>
+                    <span class="mt-2 block text-sm leading-relaxed text-ink-3">{course.desc}</span>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

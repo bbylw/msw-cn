@@ -1,0 +1,51 @@
+---
+import '../styles/global.css';
+import { site } from '../data/content';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = `${site.name}: ${site.headline}`,
+  description = site.sub,
+} = Astro.props;
+
+// Absolute URL, required for social cards once the site is served from a domain.
+const ogImage = new URL('/media/msw-quick-look-network.jpg', Astro.site ?? Astro.url);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astro.url} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astro.url} />
+    <link rel="preload" href="/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link
+      rel="preload"
+      href="/fonts/GeistMono-Variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="preload" as="image" href="/media/msw-quick-look-network.jpg" fetchpriority="high" />
+  </head>
+  <body>
+    <div class="grain" aria-hidden="true"></div>
+    <slot />
+  </body>
+</html>
